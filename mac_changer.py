@@ -1,6 +1,5 @@
 import scapy
 import subprocess
-import argparse
 
 def get_mac(interface = None):
     if interface:
