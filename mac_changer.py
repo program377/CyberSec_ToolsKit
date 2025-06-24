@@ -11,7 +11,7 @@ def get_mac(interface=None):
         for line in output.splitlines():
             match = pattern.match(line)
             if match:
-                iface = match.group(1).split('@')[0]
+                iface = match.group(1)
                 mac = match.group(2)
                 mac_iface_dict[iface] = mac
 
