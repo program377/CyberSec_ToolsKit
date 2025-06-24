@@ -7,7 +7,6 @@ def get_mac(interface=None):
     try:
         output = subprocess.check_output(['ip', '-o', 'link'], text=True)
         pattern = re.compile(r"^\d+: ([\w@.\-]+):.*link/ether ([0-9a-f:]{17})", re.MULTILINE)
-
         for line in output.splitlines():
             match = pattern.match(line)
             if match:

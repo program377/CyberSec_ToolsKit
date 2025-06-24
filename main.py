@@ -5,7 +5,7 @@ from mac_changer import get_mac
 def main():
     parser = argparse.ArgumentParser(description="Get the MAC address of any interface")
     group = parser.add_mutually_exclusive_group(required=True)
-    group.add_argument('-all', action='store_true', help='Display all interfaces MACs')
+    group.add_argument('--all', action='store_true', help='Display all interfaces MACs')
     group.add_argument('-i', '--interface', dest='interface', help='Specify the interface name')
     args = parser.parse_args()
 
