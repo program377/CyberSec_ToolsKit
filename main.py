@@ -15,14 +15,14 @@ def main():
         for iface, mac in all_macs.items():
             print(f"Interface: {iface} -> MAC: {mac}")
     else:
-        macs = get_mac()  # this no longer prints anything
-        if args.interface not in macs:
+        ifaces_macs = get_mac()  # this no longer prints anything
+        if args.interface not in ifaces_macs:
             print(f"[!] Failed to retrieve interface {args.interface} [!]")
-            print(f"[i] Available interfaces: {list(macs.keys())}")
+            print(f"[i] Available interfaces: {list(ifaces_macs.keys())}")
             sys.exit(1)
         else:
             print(f"[+] Getting MAC of interface {args.interface} [+]")
-            print(f"{args.interface} => {macs[args.interface]}")
+            print(f"{args.interface} => {ifaces_macs[args.interface]}")
 
 if __name__ == '__main__':
     main()
