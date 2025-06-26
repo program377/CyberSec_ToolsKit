@@ -1,5 +1,6 @@
 import subprocess
 import re
+import sys
 
 def get_mac():
     """Returns a dictionary {interface: mac_address}"""
@@ -19,3 +20,22 @@ def get_mac():
         raise RuntimeError("Failed to retrieve interface information.")
 
     return mac_iface_dict
+
+def manual_mac(ifaces):
+    try:
+        output = subprocess.run(['ip','link', 'set', ifaces, 'down'], text=True)
+    except subprocess.CalledProcessError:
+        raise RuntimeError(f"Cannot find device {ifaces}")
+
+def auto_mac():
+    pass
+
+def ifaces_checking(ifaces, iface_arg):
+    if iface_arg not in ifaces:
+        print(f"[!] Failed to retrieve interface {iface_arg} [!]")
+        print(f"[i] Available interfaces: {list(ifaces.keys())}")
+        sys.exit(1)
+
+
+
+
