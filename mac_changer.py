@@ -1,3 +1,4 @@
+import os
 import subprocess
 import re
 import sys
@@ -19,11 +20,22 @@ def get_mac():
         raise RuntimeError("Failed to retrieve interface information.")
     return mac_iface_dict
 
-def manual_mac(ifaces):
+def manual_mac(iface, new_mac):
+
+    if os.geteuid() != 0:
+        print("Root priviledge required")
+        return
     try:
-        output = subprocess.run(['ip','link', 'set', ifaces, 'down'], text=True)
-    except subprocess.CalledProcessError:
-        raise RuntimeError(f"Cannot find device {ifaces}")
+        subprocess.run(['ip','link', 'set',iface, 'down'], text=True)
+        subprocess.run(['ip', 'link', 'set', iface, 'address', new_mac], check=True)
+        pattern = re.compile(r"^([0-9A-Fa-f]{2}:){5}([0-9A-Fa-f]{2})$")
+        if pattern.match(new_mac):
+            subprocess.run(['ip', 'link', 'set', iface, 'up'], check=True)
+            print(f"[+] The new MAC of {iface} is {new_mac} [+]")
+        else:
+            print("[!] Invalid MAC address [!]")
+    except subprocess.CalledProcessError as e:
+        print("[!] Command failed [!]")
 
 def auto_mac():
     pass
@@ -33,6 +45,7 @@ def ifaces_checking(ifaces, iface_arg):
         print(f"[!] Failed to retrieve interface {iface_arg} [!]")
         print(f"[i] Available interfaces: {list(ifaces.keys())}")
         sys.exit(1)
+
 
 
 
