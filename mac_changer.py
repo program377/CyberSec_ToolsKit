@@ -45,7 +45,7 @@ def ifaces_checking(ifaces, mac_ifaces_dict):
     print(f"[!] Failed to retrieve interface {ifaces} [!]")
     print(f"[i] Available interfaces: {list_ifaces} [i]")
     sys.exit(1)
-
+#
 
 
 

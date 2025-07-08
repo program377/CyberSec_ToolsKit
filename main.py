@@ -26,18 +26,7 @@ def main():
         print(f"[+] Getting MAC of interface {args.interface} [+]")
         print(f"{args.interface} => {ifaces_macs[args.interface]}")
 
-
-    # if args.manual and not args.interface:
-    #     ifaces_checking(ifaces_macs, args.interface)
-    #     pass
-    #     #manual_mac(args.interface)
-    #     #ifaces_checking(ifaces_macs, args.interface)
-    #     # manual_mac(args.interface)
-    #     # if args.interface not in ifaces_macs:
-    #     #     ifaces_checking(ifaces_macs, args.interface)
-    #
-    # #else:
-    #     #ifaces_checking(ifaces_macs, args.interface)
+#
 
 
 if __name__ == '__main__':
