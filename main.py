@@ -10,6 +10,8 @@ def main():
     args = parser.parse_args()
     ifaces_macs = get_mac()
 
+    if args.interface not in ifaces_macs.keys():
+        ifaces_checking(args.interface, ifaces_macs)
     if args.manual and not args.interface:
         ifaces_checking(ifaces_macs, args.interface)
         sys.exit(1)
@@ -20,10 +22,10 @@ def main():
         ifaces_macs = get_mac()
         for iface, mac in ifaces_macs.items():
             print(f"Interface: {iface} -> MAC: {mac}")
-
     if args.interface in ifaces_macs:
         print(f"[+] Getting MAC of interface {args.interface} [+]")
         print(f"{args.interface} => {ifaces_macs[args.interface]}")
+
 
     # if args.manual and not args.interface:
     #     ifaces_checking(ifaces_macs, args.interface)

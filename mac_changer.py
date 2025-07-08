@@ -40,11 +40,11 @@ def manual_mac(iface, new_mac):
 def auto_mac():
     pass
 
-def ifaces_checking(ifaces, iface_arg):
-    if iface_arg not in ifaces:
-        print(f"[!] Failed to retrieve interface {iface_arg} [!]")
-        print(f"[i] Available interfaces: {list(ifaces.keys())}")
-        sys.exit(1)
+def ifaces_checking(ifaces, mac_ifaces_dict):
+    list_ifaces = list(mac_ifaces_dict.keys())
+    print(f"[!] Failed to retrieve interface {ifaces} [!]")
+    print(f"[i] Available interfaces: {list_ifaces} [i]")
+    sys.exit(1)
 
 
 
