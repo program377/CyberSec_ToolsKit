@@ -50,8 +50,8 @@ def auto_mac():
     with open('mac-vendors.json', "r") as file:
         mac_vendors = json.load(file) # Convert json into dictionary
     rand_vendors = random.choice(list(mac_vendors.keys())) # Convert mac_vendors.keys to list then pass it to random.choice which accept only list
-    prefixes = mac_vendors[rand_vendors]
-    print(rand_vendors, "==>", prefixes)
+    first_half_mac = mac_vendors[rand_vendors]
+    print(rand_vendors, "==>", first_half_mac)
 
 
 
