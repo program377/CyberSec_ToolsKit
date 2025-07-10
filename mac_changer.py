@@ -2,6 +2,8 @@ import os
 import subprocess
 import re
 import sys
+import json
+import random
 
 def get_mac():
     """Returns a dictionary {interface: mac_address}"""
@@ -23,7 +25,7 @@ def get_mac():
 def manual_mac(iface, new_mac):
 
     if os.geteuid() != 0:
-        print("Root priviledge required")
+        print("Root privilege required")
         return
     try:
         subprocess.run(['ip','link', 'set',iface, 'down'], text=True)
@@ -37,15 +39,16 @@ def manual_mac(iface, new_mac):
     except subprocess.CalledProcessError as e:
         print("[!] Command failed [!]")
 
-def auto_mac():
-    pass
-
 def ifaces_checking(ifaces, mac_ifaces_dict):
     list_ifaces = list(mac_ifaces_dict.keys())
     print(f"[!] Failed to retrieve interface {ifaces} [!]")
     print(f"[i] Available interfaces: {list_ifaces} [i]")
     sys.exit(1)
-#
+
+def auto_mac():
+    with open('mac-vendors.json', "r") as file:
+        mac_vendors = json.load(file)
+
 
 
 
