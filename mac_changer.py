@@ -65,7 +65,7 @@ def auto_mac():
         print(rand_vendors, "=>", first_half_mac)
 
 
-
+###
 
 
 
