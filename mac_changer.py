@@ -5,6 +5,9 @@ import sys
 import json
 import random
 
+from wtforms.validators import length
+
+
 def get_mac():
     """Returns a dictionary {interface: mac_address}"""
     mac_iface_dict = {}
@@ -49,9 +52,17 @@ def auto_mac():
 
     with open('mac-vendors.json', "r") as file:
         mac_vendors = json.load(file) # Convert json into dictionary
-    rand_vendors = random.choice(list(mac_vendors.keys())) # Convert mac_vendors.keys to list then pass it to random.choice which accept only list
-    first_half_mac = mac_vendors[rand_vendors]
-    print(rand_vendors, "==>", first_half_mac)
+    # Get the lists of vendor and convert mac_vendors.keys to list then pass it to random.choice which accept only list
+    rand_vendors = random.choice(list(mac_vendors.keys()))
+    #print(rand_vendors)
+    print(mac_vendors[rand_vendors])
+
+    if len(set(mac_vendors[rand_vendors])) >= 2:
+        rand_first_half_mac = random.choice(mac_vendors[rand_vendors])
+        print(rand_vendors, "=>", rand_first_half_mac)
+    else:
+        first_half_mac = mac_vendors[rand_vendors] # Select random first half MAC address
+        print(rand_vendors, "=>", first_half_mac)
 
 
 
