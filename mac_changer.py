@@ -54,10 +54,7 @@ def auto_mac():
         mac_vendors = json.load(file) # Convert json into dictionary
     # Get the lists of vendor and convert mac_vendors.keys to list then pass it to random.choice which accept only list
     rand_vendors = random.choice(list(mac_vendors.keys()))
-    #print(rand_vendors)
-    print(mac_vendors[rand_vendors])
-
-    if len(set(mac_vendors[rand_vendors])) >= 2:
+    if len(set(mac_vendors[rand_vendors])) >= 2: # Remove duplicate values
         rand_first_half_mac = random.choice(mac_vendors[rand_vendors])
         print(rand_vendors, "=>", rand_first_half_mac)
     else:
@@ -65,7 +62,7 @@ def auto_mac():
         print(rand_vendors, "=>", first_half_mac)
 
 
-###
+
 
 
 
