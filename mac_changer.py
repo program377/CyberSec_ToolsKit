@@ -7,6 +7,7 @@ import random
 
 from django.template.defaultfilters import upper
 from numpy.ma.core import concatenate
+from numpy.testing.overrides import allows_array_ufunc_override
 from wtforms.validators import length
 
 
@@ -70,10 +71,13 @@ def _2nd_half_mac():
 
 
 def auto_mac(first_half, sec_half_mac):
-    pass
+    first_half_mac = _1st_half_mac()
+    sec_half_mac = _2nd_half_mac()
+    final_mac = concatenate(first_half_mac, sec_half_mac)
 
 
 
 
+auto_mac()
 
 

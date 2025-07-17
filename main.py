@@ -27,7 +27,7 @@ def main():
         print(f"[+] Getting MAC of interface {args.interface} [+]")
         print(f"{args.interface} => {ifaces_macs[args.interface]}")
 
-auto_mac()
+
 
 
 if __name__ == '__main__':
