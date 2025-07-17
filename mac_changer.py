@@ -6,6 +6,7 @@ import json
 import random
 
 from django.template.defaultfilters import upper
+from numpy.ma.core import concatenate
 from wtforms.validators import length
 
 
@@ -34,7 +35,7 @@ def manual_mac(iface, new_mac):
     try:
         subprocess.run(['ip','link', 'set',iface, 'down'], text=True)
         subprocess.run(['ip', 'link', 'set', iface, 'address', new_mac], check=True)
-        pattern = re.compile(r"^([0-9A-Fa-f]{2}:){5}([0-9A-Fa-f]{2})$") # Regex for MAC address
+        pattern = re.compile(r"^([0-9A-Fa-f]{2}:){5}([0-9A-Fa-f]{2})$") # Search for MAC address pattern 
         if pattern.match(new_mac):
             subprocess.run(['ip', 'link', 'set', iface, 'up'], check=True)
             print(f"[+] The new MAC of {iface} is {new_mac} [+]")
@@ -49,23 +50,27 @@ def ifaces_checking(ifaces, mac_ifaces_dict):
     print(f"[i] Available interfaces: {list_ifaces} [i]")
     sys.exit(1)
 
-def auto_mac():
-
+def _1st_half_mac():
     with open('mac-vendors.json', "r") as file:
         mac_vendors = json.load(file) # Convert json into dictionary
     # Get the lists of vendor and convert mac_vendors.keys to list then pass it to random.choice which accept only list
     rand_vendors = random.choice(list(mac_vendors.keys()))
-
     if len(set(mac_vendors[rand_vendors])) >= 2: # Remove duplicate values and test if we have more than 1 value
-        rand_first_half_mac = str(random.choice(mac_vendors[rand_vendors]))
+        first_raw_mac = str(random.choice(mac_vendors[rand_vendors])).zfill(0).lower()
     else:
-        first_half_mac = mac_vendors[rand_vendors][0]
-        first_raw_mac = first_half_mac.zfill(6).upper() # Select random first half MAC address
-        print(first_raw_mac)
-        new_rand_mac = ':'.join(first_raw_mac[i:i+2] for i in range(0, 6, 2))
-        #new_mac_result = ":".join(new_rand_mac).upper()
-        print(new_rand_mac)
-        #
+        first_half_mac = mac_vendors[rand_vendors][0]  # Get the first string
+        first_raw_mac = first_half_mac.zfill(6).lower() # Fill up with preceding zero until the num of character is 6
+    new_rand_mac = ':'.join(first_raw_mac[i:i+2] for i in range(0, 6, 2))
+    return new_rand_mac
+    
+def _2nd_half_mac():
+    bytes = [random.randint(0x00, 0xff) for _ in range(3)]
+    sec_half_mac = ':'.join(f"{b:02x}" for b in bytes)
+    return sec_half_mac
+
+
+def auto_mac(first_half, sec_half_mac):
+    pass
 
 
 
