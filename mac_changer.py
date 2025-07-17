@@ -65,6 +65,7 @@ def auto_mac():
         new_rand_mac = ':'.join(first_raw_mac[i:i+2] for i in range(0, 6, 2))
         #new_mac_result = ":".join(new_rand_mac).upper()
         print(new_rand_mac)
+        #
 
 
 
