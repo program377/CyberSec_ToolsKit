@@ -5,6 +5,7 @@ import sys
 import json
 import random
 
+from django.template.defaultfilters import upper
 from wtforms.validators import length
 
 
@@ -54,12 +55,16 @@ def auto_mac():
         mac_vendors = json.load(file) # Convert json into dictionary
     # Get the lists of vendor and convert mac_vendors.keys to list then pass it to random.choice which accept only list
     rand_vendors = random.choice(list(mac_vendors.keys()))
-    if len(set(mac_vendors[rand_vendors])) >= 2: # Remove duplicate values
-        rand_first_half_mac = random.choice(mac_vendors[rand_vendors])
-        print(rand_vendors, "=>", rand_first_half_mac)
+
+    if len(set(mac_vendors[rand_vendors])) >= 2: # Remove duplicate values and test if we have more than 1 value
+        rand_first_half_mac = str(random.choice(mac_vendors[rand_vendors]))
     else:
-        first_half_mac = mac_vendors[rand_vendors] # Select random first half MAC address
-        print(rand_vendors, "=>", first_half_mac)
+        first_half_mac = mac_vendors[rand_vendors][0]
+        first_raw_mac = first_half_mac.zfill(6).upper() # Select random first half MAC address
+        print(first_raw_mac)
+        new_rand_mac = ':'.join(first_raw_mac[i:i+2] for i in range(0, 6, 2))
+        #new_mac_result = ":".join(new_rand_mac).upper()
+        print(new_rand_mac)
 
 
 
