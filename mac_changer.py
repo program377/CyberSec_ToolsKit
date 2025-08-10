@@ -54,15 +54,24 @@ def ifaces_checking(ifaces, mac_ifaces_dict):
 def _1st_half_mac():
     with open('mac-vendors.json', "r") as file:
         mac_vendors = json.load(file) # Convert json into dictionary
-    # Get the lists of vendor and convert mac_vendors.keys to list then pass it to random.choice which accept only list
+    """
+    Gets all the keys of the dictionary (vendors) using .keys().
+    Converts these keys to a list (because random.choice() requires a sequence).
+    Selects one random vendor key from the list and stores it in rand_vendors.
+    """
     rand_vendors = random.choice(list(mac_vendors.keys()))
-    if len(set(mac_vendors[rand_vendors])) >= 2: # Remove duplicate values and test if we have more than 1 value
-        first_raw_mac = str(random.choice(mac_vendors[rand_vendors])).zfill(0).lower()
+    """
+    Takes the list of MAC prefixes for the chosen vendor mac_vendors[rand_vendors].
+    Converts the list to a set to remove duplicates.
+    Checks if the vendor has 2 or more unique prefixes.
+    """
+    if len(set(mac_vendors[rand_vendors])) >= 2: 
+        first_raw_mac = str(random.choice(mac_vendors[rand_vendors])).lower()
     else:
         first_half_mac = mac_vendors[rand_vendors][0]  # Get the first string
         first_raw_mac = first_half_mac.zfill(6).lower() # Fill up with preceding zero until the num of character is 6
-    new_rand_mac = ':'.join(first_raw_mac[i:i+2] for i in range(0, 6, 2))
-    return new_rand_mac
+    first_half = ':'.join(first_raw_mac[i:i+2] for i in range(0, 6, 2))
+    return first_half
     
 def _2nd_half_mac():
     bytes = [random.randint(0x00, 0xff) for _ in range(3)]
