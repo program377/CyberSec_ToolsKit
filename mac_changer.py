@@ -52,24 +52,30 @@ def ifaces_checking(ifaces, mac_ifaces_dict):
     sys.exit(1)
 
 def _1st_half_mac():
-    with open('mac-vendors.json', "r") as file:
-        mac_vendors = json.load(file) # Convert json into dictionary
     """
     Gets all the keys of the dictionary (vendors) using .keys().
     Converts these keys to a list (because random.choice() requires a sequence).
     Selects one random vendor key from the list and stores it in rand_vendors.
     """
-    rand_vendors = random.choice(list(mac_vendors.keys()))
+    with open('mac-vendors.json', "r") as file:
+        mac_vendors = json.load(file) # Convert json into dictionary
     """
     Takes the list of MAC prefixes for the chosen vendor mac_vendors[rand_vendors].
     Converts the list to a set to remove duplicates.
     Checks if the vendor has 2 or more unique prefixes.
+    Converts it to lowercase.
     """
+    rand_vendors = random.choice(list(mac_vendors.keys()))
     if len(set(mac_vendors[rand_vendors])) >= 2: 
         first_raw_mac = str(random.choice(mac_vendors[rand_vendors])).lower()
     else:
-        first_half_mac = mac_vendors[rand_vendors][0]  # Get the first string
-        first_raw_mac = first_half_mac.zfill(6).lower() # Fill up with preceding zero until the num of character is 6
+        #Pads the prefix with leading zeros if it’s shorter than 6 characters (because MAC prefix is usually 6 hex digits).
+        first_half_mac = mac_vendors[rand_vendors][0]
+        first_raw_mac = first_half_mac.zfill(6).lower()
+    """
+    Splits the 6-character first_raw_mac string into 3 parts of 2 characters each.
+    Joins these parts with a colon : separator to form a MAC-style prefix (e.g., "00:1a:2b").
+    """
     first_half = ':'.join(first_raw_mac[i:i+2] for i in range(0, 6, 2))
     return first_half
     
