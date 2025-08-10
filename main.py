@@ -7,7 +7,7 @@ def main():
     parser.add_argument('--all', action='store_true', help='Display all interfaces MACs')
     parser.add_argument('-i', '--interface', dest='interface', help='Specify the interface name')
     parser.add_argument('-m', '--manual', dest='manual', help='Manually change the MAC address. Root access needed')
-    parser.add_argument('-a','--auto', dest='auto_mac', help='Automatically change the MAC address')
+    parser.add_argument('-a','--auto', dest='auto', help='Automatically change the MAC address')
     args = parser.parse_args()
     ifaces_macs = get_mac()
     auto_mac()
@@ -27,7 +27,8 @@ def main():
         print(f"[+] Getting MAC of interface {args.interface} [+]")
         print(f"{args.interface} => {ifaces_macs[args.interface]}")
 
-
+    if args.auto:
+        first_half =_1st_half_mac()
 
 
 if __name__ == '__main__':

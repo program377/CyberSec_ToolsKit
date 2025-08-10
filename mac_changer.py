@@ -78,6 +78,5 @@ def auto_mac(first_half, sec_half_mac):
 
 
 
-auto_mac()
 
 
