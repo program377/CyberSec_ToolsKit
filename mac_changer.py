@@ -74,7 +74,7 @@ def _1st_half_mac():
         first_raw_mac = first_half_mac.zfill(6).lower()
     """
     Splits the 6-character first_raw_mac string into 3 parts of 2 characters each.
-    Joins these parts with a colon : separator to form a MAC-style prefix (e.g., "00:1a:2b").
+    Joins these parts with a colon : separator to form a MAC-style prefix
     """
     first_half = ':'.join(first_raw_mac[i:i+2] for i in range(0, 6, 2))
     return first_half
@@ -91,7 +91,7 @@ def _2nd_half_mac():
     f"{b:02x}" formats the number:
     02 → always 2 characters wide, padding with a leading zero if needed.
     x → format as lowercase hexadecimal (so 10 becomes "0a").
-    ':'.join(...) joins these formatted hex values with : separators to create a string like "2d:c9:9e"
+    Joins these formatted hex values with : separators to create a string
     """
     sec_half_mac = ':'.join(f"{b:02x}" for b in bytes)
     return sec_half_mac
