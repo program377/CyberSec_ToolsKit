@@ -80,7 +80,19 @@ def _1st_half_mac():
     return first_half
     
 def _2nd_half_mac():
+    """
+    Creates a list comprehension that runs random.randint(0x00, 0xff) 3 times.
+    0x00 and 0xff are hexadecimal numbers (0 and 255 in decimal).
+    Each call generates a random number between 0 and 255 (inclusive) — which is the valid range for a MAC address byte.
+    """
     bytes = [random.randint(0x00, 0xff) for _ in range(3)]
+    """
+    Loops through each value b in the list bytes.
+    f"{b:02x}" formats the number:
+    02 → always 2 characters wide, padding with a leading zero if needed.
+    x → format as lowercase hexadecimal (so 10 becomes "0a").
+    ':'.join(...) joins these formatted hex values with : separators to create a string like "2d:c9:9e"
+    """
     sec_half_mac = ':'.join(f"{b:02x}" for b in bytes)
     return sec_half_mac
 
