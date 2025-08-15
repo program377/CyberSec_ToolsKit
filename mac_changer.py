@@ -28,14 +28,14 @@ def get_mac():
         raise RuntimeError("Failed to retrieve interface information.")
     return mac_iface_dict
 
-def manual_mac(iface, new_mac):
+def manual_mac(iface, new_mac): 
 
     if os.geteuid() != 0:
         print("[!] Root privilege required [!]")
         exit(0)
     try:
         subprocess.run(['ip','link', 'set',iface, 'down'], text=True)
-        subprocess.run(['ip', 'link', 'set', iface, 'address', new_mac], check=True)
+        subprocess.run(['ip', 'link', 'set', iface, 'address', new_mac], check=True, capture_output=True)
         pattern = re.compile(r"^([0-9A-Fa-f]{2}:){5}([0-9A-Fa-f]{2})$") # Search for MAC address pattern 
         if pattern.match(new_mac):
             subprocess.run(['ip', 'link', 'set', iface, 'up'], check=True)
@@ -44,7 +44,8 @@ def manual_mac(iface, new_mac):
         else:
             print("[!] Invalid MAC address [!]")
     except subprocess.CalledProcessError as e:
-        print("[!] Command failed [!]")
+        if "Invalid address length" in e.stderr:
+            print("[!] System error [!]:", e.stderr)
         exit(1)
 
 def ifaces_checking(ifaces, mac_ifaces_dict):
