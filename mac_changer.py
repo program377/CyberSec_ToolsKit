@@ -29,24 +29,24 @@ def get_mac():
     return mac_iface_dict
 
 def manual_mac(iface, new_mac): 
-
+    pattern = re.compile(r"^([0-9A-Fa-f]{2}:){5}([0-9A-Fa-f]{2})$") # Search for MAC address pattern 
     if os.geteuid() != 0:
         print("[!] Root privilege required [!]")
         exit(0)
     try:
         subprocess.run(['ip','link', 'set',iface, 'down'], text=True)
-        subprocess.run(['ip', 'link', 'set', iface, 'address', new_mac], check=True, capture_output=True)
-        pattern = re.compile(r"^([0-9A-Fa-f]{2}:){5}([0-9A-Fa-f]{2})$") # Search for MAC address pattern 
+        cmd_outp = subprocess.run(['ip', 'link', 'set', iface, 'address', new_mac], check=True, capture_output=True, text=True)
         if pattern.match(new_mac):
             subprocess.run(['ip', 'link', 'set', iface, 'up'], check=True)
             print(f"[+] The new MAC of {iface} is {new_mac} [+]")
             exit(0)
-        else:
-            print("[!] Invalid MAC address [!]")
     except subprocess.CalledProcessError as e:
         if "Invalid address length" in e.stderr:
-            print("[!] System error [!]:", e.stderr)
+            print("[!] System error :", e.stderr.strip(), "[!]")
+        subprocess.run(['ip', 'link', 'set', iface, 'up'], check=True)
+
         exit(1)
+    
 
 def ifaces_checking(ifaces, mac_ifaces_dict):
     list_ifaces = list(mac_ifaces_dict.keys())

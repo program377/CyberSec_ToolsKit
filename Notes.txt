@@ -1,3 +1,3 @@
 1. Think about error handling in your code insiee one function
 2. When the mac address is wrong the interface is still DOWN
-3. Doing lot of testing
+3. Using manual mac: when users enter string or other characters nothing happened
