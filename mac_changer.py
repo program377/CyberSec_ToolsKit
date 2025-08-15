@@ -16,7 +16,7 @@ def get_mac():
     mac_iface_dict = {}
     try:
         output = subprocess.check_output(['ip', '-o', 'link'], text=True) # This command display both the interface & mac on the same line
-        pattern = re.compile(r"^\d+: ([\w@.\-]+):.*link/ether ([0-9a-f:]{17})", re.MULTILINE) # Pattern to find entry like 01: ... link/ether
+        pattern = re.compile(r"^\d+: ([\w@.\-]+):.*link/ether ([0-9a-f:]{17})", re.MULTILINE) # re.MULTILINE will match every lines after \n
 
         for line in output.splitlines():
             match = pattern.match(line)
@@ -31,8 +31,8 @@ def get_mac():
 def manual_mac(iface, new_mac):
 
     if os.geteuid() != 0:
-        print("Root privilege required")
-        return
+        print("[!] Root privilege required [!]")
+        exit(0)
     try:
         subprocess.run(['ip','link', 'set',iface, 'down'], text=True)
         subprocess.run(['ip', 'link', 'set', iface, 'address', new_mac], check=True)
@@ -40,10 +40,12 @@ def manual_mac(iface, new_mac):
         if pattern.match(new_mac):
             subprocess.run(['ip', 'link', 'set', iface, 'up'], check=True)
             print(f"[+] The new MAC of {iface} is {new_mac} [+]")
+            exit(0)
         else:
             print("[!] Invalid MAC address [!]")
     except subprocess.CalledProcessError as e:
         print("[!] Command failed [!]")
+        exit(1)
 
 def ifaces_checking(ifaces, mac_ifaces_dict):
     list_ifaces = list(mac_ifaces_dict.keys())

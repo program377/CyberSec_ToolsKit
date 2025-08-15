@@ -4,17 +4,15 @@ from mac_changer import *
 from mac_changer import _1st_half_mac, _2nd_half_mac
 
 def main():
-    parser = argparse.ArgumentParser(description="Get the MAC address of any interface")
+    parser = argparse.ArgumentParser(description="Get the MAC address of any interface and modify manually or automatically.")
     parser.add_argument('--all', action='store_true', help='Display all interfaces MACs')
     parser.add_argument('-i', '--interface', dest='interface', help='Specify the interface name')
     parser.add_argument('-m', '--manual', dest='manual', help='Manually change the MAC address. Root access needed')
     parser.add_argument('-a','--auto', dest='auto', help='Automatically change the MAC address')
     args = parser.parse_args()
     ifaces_macs = get_mac()
-    if args.interface not in ifaces_macs.keys():
+    if args.interface not in ifaces_macs.keys() or (args.manual and not args.interface):
         ifaces_checking(args.interface, ifaces_macs)
-    if args.manual and not args.interface:
-        ifaces_checking(ifaces_macs, args.interface)
         sys.exit(1)
     if args.manual and args.interface:
         manual_mac(args.interface, args.manual)
