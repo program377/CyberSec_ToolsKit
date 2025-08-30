@@ -2,5 +2,5 @@
 2. When the mac address is wrong the interface is still DOWN      ✅
 3. Using manual mac: when users enter string or other characters nothing happened ✅
 4. [!] Failed to retrieve interface None [!] When we specify -all arguments ✅
-5. Issue with -auto command lots of bugs ⚠️
-6. When the MAC address is changed manually the interface is still down ⚠️
+5. Issue with -auto command lots of bugs ✅
+6. When the MAC address is changed manually the interface is still down ✅

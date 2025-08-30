@@ -1,7 +1,7 @@
 import argparse
 import sys
-from mac_changer import *
-from mac_changer import _1st_half_mac, _2nd_half_mac
+from mac_changer.mac_changer import *
+from mac_changer.mac_changer import _1st_half_mac, _2nd_half_mac
 
 def main():
     parser = argparse.ArgumentParser(description="Get the MAC address of any interfaces and modify MACs manually or automatically.")
