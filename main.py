@@ -29,9 +29,10 @@ def main():
         print(f"{args.interface} => {ifaces_macs[args.interface]}")
 
     if args.auto and args.interface:
-        first_half =_1st_half_mac()
-        sec_half = _2nd_half_mac
-        auto_mac(first_half, sec_half)
+        first_half =str(_1st_half_mac())
+        sec_half = _2nd_half_mac()
+        final_auto_mac =auto_mac(first_half, sec_half)
+        manual_mac(args.interface, final_auto_mac)
 
 
 if __name__ == '__main__':

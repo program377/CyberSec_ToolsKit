@@ -96,14 +96,13 @@ def _2nd_half_mac():
     x → format as lowercase hexadecimal (so 10 becomes "0a").
     Joins these formatted hex values with : separators to create a string
     """
-    sec_half_mac = ':'.join(f"{b:02x}" for b in bytes)
+    sec_half_mac = ':'.join(f"{b:02x}" for b in bytes) 
     return sec_half_mac
 
 
-def auto_mac(first_half, sec_half_mac):
-    first_half_mac = _1st_half_mac()
-    sec_half_mac = _2nd_half_mac()
-    final_mac = concatenate(first_half_mac, sec_half_mac)
+def auto_mac(first_half_mac, sec_half_mac):
+    final_mac = f'{first_half_mac}:{sec_half_mac}'
+    return final_mac
 
 
 
