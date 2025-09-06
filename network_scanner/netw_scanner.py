@@ -2,19 +2,25 @@ from scapy.all import Ether, ARP, srp
 
 
 def arp_scan(ip):
+    mac_ip_list = []
     packet = Ether(dst='ff:ff:ff:ff:ff:ff')/ARP(pdst=ip)
     ans = srp(packet, timeout=2)[0]
     print("-------------------------------------------")
-    print('MACs Adresses\t\tIP Adresses')
+    print('IP Adresses\t\tMACs Adresses')
     print("-------------------------------------------")
     for elt in ans:
-        print(elt[1].hwsrc,"\t", elt[1].psrc)
+        mac_ip_list.append(elt[1].psrc)
+        print(elt[1].psrc,"  \t", elt[1].hwsrc)
     print("-------------------------------------------")
-    #print(ans.summary())
+    print(mac_ip_list)
     #scapy.ls(scapy.ARP)
+    return mac_ip_list
 
 
-def get_ip(ip):
+def get_network(ip):
+    pass
+
+def nmap_enum():
     pass
 
 
