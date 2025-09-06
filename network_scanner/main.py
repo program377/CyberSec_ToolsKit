@@ -1,4 +1,6 @@
 import argparse
+from netw_scanner import all
+
 
 def main():
     parser = argparse.ArgumentParser()
