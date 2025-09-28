@@ -1,18 +1,20 @@
+from tabnanny import verbose
 from scapy.all import Ether, ARP, srp
 
 
 def arp_scan(ip):
     mac_ip_list = []
-    packet = Ether(dst='ff:ff:ff:ff:ff:ff')/ARP(pdst=ip)
-    ans = srp(packet, timeout=2)[0]
+    targets = {}
+    arp_req_broad = Ether(dst='ff:ff:ff:ff:ff:ff')/ARP(pdst=ip)
+    answers = srp(arp_req_broad, timeout=2)[0]
     print("-------------------------------------------")
     print('IP Adresses\t\tMACs Adresses')
-    print("-------------------------------------------")
-    for elt in ans:
+    print("-------------------------------------------") 
+    for elt in answers:
         mac_ip_list.append(elt[1].psrc)
         print(elt[1].psrc,"  \t", elt[1].hwsrc)
     print("-------------------------------------------")
-    print(mac_ip_list)
+    #print(mac_ip_list)
     #scapy.ls(scapy.ARP)
     return mac_ip_list
 
