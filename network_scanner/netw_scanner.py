@@ -1,3 +1,4 @@
+from os import *
 import sys
 from tabnanny import verbose
 from hamcrest import none
@@ -7,10 +8,15 @@ import re
 
 
 def arp_scan(ip):
+    if getuid() != 0:
+        raise PermissionError("[-] Root privilege required [-]")
+    if "/" not in ip:
+        print('[-] ARP scan: use a CIDR range, not a single host [-]')
+        sys.exit(0)
     mac_ip_list = []
     targets = {}
     arp_req_broad = Ether(dst='ff:ff:ff:ff:ff:ff')/ARP(pdst=ip)
-    answers = srp(arp_req_broad, timeout=2)[0]
+    answers = srp(arp_req_broad, timeout=2, verbose=False)[0]
     print("-------------------------------------------")
     print('IP Adresses\t\tMACs Adresses')
     print("-------------------------------------------") 

@@ -11,7 +11,11 @@ def main():
 
     if args.network:
         ip = get_network(args.network)
-        arp_scan(ip)
+        try:
+            arp_scan(ip)
+        except PermissionError as e:
+            print(e)
+            exit(1)
 
 
 if __name__ == '__main__':
