@@ -1,9 +1,9 @@
+import sys
 from tabnanny import verbose
+from hamcrest import none
 from scapy.all import Ether, ARP, srp
 import re
 
-from six import print_
-import main
 
 
 def arp_scan(ip):
@@ -25,16 +25,15 @@ def arp_scan(ip):
 
 def get_network(ip):
     #Checking network input
-    ip_regex = re.compile(r"\b(?:(?:25[0-5]|2[0-4]\d|1?\d?\d)\.){3}(?:25[0-5]|2[0-4]\d|1?\d?\d)\
-                          (?:/(?:[0-9]|[12]\d|3[0-2]))?\b")
-    if not ip_regex.match:
+    ip_regex = re.compile(r"\b(?:(?:25[0-5]|2[0-4]\d|1?\d?\d)\.){3}(?:25[0-5]|2[0-4]\d|1?\d?\d)(?:/(?:[0-9]|[12]\d|3[0-2]))?\b")
+    if not ip_regex.fullmatch(ip):
         print("[-] Invalid IP Address ! [-]")
-    
+        sys.exit(0)
+    return ip
 
     
 
-
-    pass
+    
 
 def nmap_enum():
     pass

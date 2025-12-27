@@ -1,0 +1,21 @@
+framework/
+│
+├── core/
+│   ├── engine.py
+│   ├── request.py
+│   ├── response.py
+│
+├── recon/
+│   ├── crawler.py
+│   ├── param_finder.py
+│
+├── analyzers/
+│   ├── injection.py
+│   ├── access_control.py
+│   ├── auth.py
+│   ├── misconfig.py
+│
+├── reporting/
+│   └── reporter.py
+│
+└── main.py
