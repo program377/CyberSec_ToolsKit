@@ -1,0 +1,2 @@
+Scanning network with specifying the classless network 
+Take scan result as input for nmap 
