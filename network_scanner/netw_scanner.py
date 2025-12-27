@@ -1,5 +1,6 @@
 from tabnanny import verbose
 from scapy.all import Ether, ARP, srp
+import re
 
 
 def arp_scan(ip):
@@ -20,6 +21,8 @@ def arp_scan(ip):
 
 
 def get_network(ip):
+    #Checking network input
+
     pass
 
 def nmap_enum():
