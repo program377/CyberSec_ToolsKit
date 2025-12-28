@@ -51,7 +51,7 @@ def manual_mac(iface, new_mac):
 def ifaces_checking(ifaces, mac_ifaces_dict):
     list_ifaces = list(mac_ifaces_dict.keys())
     print(f"[!] Failed to retrieve interface {ifaces} [!]")
-    print(f"[i] Available interfaces: {list_ifaces} [i]")
+    print(f"[i] Available interfaces: {', '.join(list_ifaces)} [i]")
     sys.exit(1)
 
 def _1st_half_mac():

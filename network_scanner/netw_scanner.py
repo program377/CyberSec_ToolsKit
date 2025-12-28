@@ -4,12 +4,12 @@ from tabnanny import verbose
 from hamcrest import none
 from scapy.all import Ether, ARP, srp
 import re
+from nmap import PortScanner
 
 
 
 def arp_scan(ip):
-    if getuid() != 0:
-        raise PermissionError("[-] Root privilege required [-]")
+    root_priv()
     if "/" not in ip:
         print('[-] ARP scan: use a CIDR range, not a single host [-]')
         sys.exit(0)
@@ -38,11 +38,23 @@ def get_network(ip):
     return ip
 
     
-
+def root_priv():
+    if getuid() != 0:
+        raise PermissionError("[-] Root privilege required [-]")
     
 
-def nmap_enum():
-    pass
+def nmap_engine(targets_ip):
+    scanner = PortScanner()
+    for ip in targets_ip:
+        scanner.scan(ip, arguments='-sC -Pn -T3 -sV --min-rate 1000 -p-', ports='1-65535')
+        print("[+] Scan result for {ip} [+]")
+        for proto in scanner[ip].all_tcp:
+            for port in scanner[ip][proto]:
+                state = scanner[ip][proto][port]['state']
+                print("[+]{port}/{proto} - {state}[+]")
+    
+
+    
 
 
 
