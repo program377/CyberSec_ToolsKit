@@ -52,15 +52,11 @@ def nmap_engine(targets_ip):
             for port in scanner[ip]['tcp']:
                 state = scanner[ip]['tcp'][port]['state']
                 service = scanner[ip]['tcp'][port]['name']
-                print(f"[+]{port}/tcp - {state}[+]")
+                version = scanner[ip]['tcp'][port]['version']
+                print(f"{port}/tcp  {state} - {service} - {version}")
 
 
 
-    #for proto in scanner['192.168.1.1'].all_protocols():
-    #for port in scanner['192.168.1.1'][proto]:
-     #   service = scanner['192.168.1.1'][proto][port]['name']
-      #  state = scanner['192.168.1.1'][proto][port]['state']
-       # print(f"{port}/{proto} - {service} - {state}")
 
     
 
