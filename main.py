@@ -52,11 +52,11 @@ def main():
 
     #--ARP scan only---------------
     if args.arpscan and not args.tcpscan:
-        targets = arp_scan(args.arpscn)
+        targets = arp_scan(args.arpscan)
     #--TCP scan only--------------
         # isinstance() checks whether the argument was used in value mode (string)
-    elif args.tcp and isinstance(args.tcpscan, str):
-        nmap_engine([args.tcp])
+    elif args.tcpscan and isinstance(args.tcpscan, str):
+        nmap_engine([args.tcpscan])
     #--ARP+TCP scan
     elif args.arpscan and args.tcpscan is True:
         targets = arp_scan(args.arpscan)

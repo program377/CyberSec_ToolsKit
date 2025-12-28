@@ -41,19 +41,27 @@ def get_network(ip):
 def root_priv():
     if getuid() != 0:
         raise PermissionError("[-] Root privilege required [-]")
+    sys.exit(0)
     
 
 def nmap_engine(targets_ip):
     scanner = PortScanner()
     for ip in targets_ip:
-        scanner.scan(ip, arguments='-sC -Pn -T3 -sV --min-rate 1000 -p-')
-        print(f"[+] Scan result for {ip} [+]")
-        if 'tcp' in scanner[ip]:
-            for port in scanner[ip]['tcp']:
-                state = scanner[ip]['tcp'][port]['state']
-                service = scanner[ip]['tcp'][port]['name']
-                version = scanner[ip]['tcp'][port]['version']
-                print(f"{port}/tcp  {state} - {service} - {version}")
+        scanner.scan(ip, arguments='-sC -Pn -T3 -sV -sS --min-rate 1000 -p-')
+        for host in scanner.all_hosts(): #scanner.all_hosts() works for single ip, cidr,ranges, ARP-discovered hosts
+            print(f"[+] Scan result for {ip} [+]")
+            #print("[+] PORT------STATE-----SERVICE-----VERSION [+]")
+            if 'tcp' in scanner[host]:
+                for port in scanner[host]['tcp']:
+                    state = scanner[host]['tcp'][port]['state']
+                    service = scanner[host]['tcp'][port]['name']
+                    version = scanner[host]['tcp'][port]['version']
+                    product = scanner[host]['tcp'][port]['product']
+                    extrainfo = scanner[host]['tcp'][port]['extrainfo']
+                    conf = scanner[host]['tcp'][port]['conf']
+                    cpe = scanner[host]['tcp'][port]['cpe']
+                    print("[+] PORT------STATE-----SERVICE-----VERSION [+]")
+                    print(f"{port}/tcp  {state} - {service} - {version} - {product} - {extrainfo} - {conf} - {cpe}")
 
 
 
