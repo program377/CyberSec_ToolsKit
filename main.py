@@ -10,7 +10,10 @@ from mac_changer.mac_changer import _1st_half_mac, _2nd_half_mac
 def main():
     parser = argparse.ArgumentParser(description="Cyber Security Toolkit")
     parser.add_argument('-p', '--arp-scan', dest='arpscan', help='Hosts Discovery - Specify the network along with cidr (e.g:10.x.x.x/x)')
-    parser.add_argument('-t', '--tcp-scan', dest='tcpscan', action='store_true', help='TCP Nmap Engine scan')
+    
+    # nargs='?' allows the argument to be used with or without a value
+    # const=True → value used when argument is provided without a value
+    parser.add_argument('-t', '--tcp-scan', dest='tcpscan', nargs='?', const=True, help='TCP Nmap Engine scan')
     parser.add_argument('-u', '--udp-scan', dest='udpscan', metavar='', help='TCP Nmap Engine scan')
 
     parser.add_argument('--all', action='store_true', help='Display all interfaces MACs')
@@ -46,19 +49,22 @@ def main():
         final_auto_mac =auto_mac(first_half, sec_half)
         manual_mac(args.interface, final_auto_mac)
 
-# -------- HOSTS DISCOVERY --------
-    if args.arpscan:
-        nw = get_network(args.arpscan)
-        try:
-            targets_ip = arp_scan(nw)
-        except PermissionError as e:
-            print(e)
-            exit(1)
-    
 
-# -------- NETWORK SCANNER --------
-    if args.tcpscan:
-        nmap_engine(targets_ip)
+    #--ARP scan only---------------
+    if args.arpscan and not args.tcpscan:
+        targets = arp_scan(args.arpscn)
+    #--TCP scan only--------------
+        # isinstance() checks whether the argument was used in value mode (string)
+    elif args.tcp and isinstance(args.tcpscan, str):
+        nmap_engine([args.tcp])
+    #--ARP+TCP scan
+    elif args.arpscan and args.tcpscan is True:
+        targets = arp_scan(args.arpscan)
+        nmap_engine(targets)
+    else:
+        parser.print_help()
+
+
 
 if __name__ == '__main__':
     main()
