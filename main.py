@@ -1,4 +1,5 @@
 import argparse
+from ast import Store
 
 from tables import Description
 from network_scanner.netw_scanner import *
@@ -8,9 +9,9 @@ from mac_changer.mac_changer import _1st_half_mac, _2nd_half_mac
 
 def main():
     parser = argparse.ArgumentParser(description="Cyber Security Toolkit")
-    parser.add_argument('-p', '--arp-scan', metavar='', dest='arpscan', help='Hosts Discovery - Specify the network along with cidr(e.g:10.x.x.x/x)')
-    parser.add_argument('-t', '--tcp-scan', dest='tcpscan', metavar='', help='TCP Nmap Engine scan')
-
+    parser.add_argument('-p', '--arp-scan', dest='arpscan', help='Hosts Discovery - Specify the network along with cidr (e.g:10.x.x.x/x)')
+    parser.add_argument('-t', '--tcp-scan', dest='tcpscan', action='store_true', help='TCP Nmap Engine scan')
+    parser.add_argument('-u', '--udp-scan', dest='udpscan', metavar='', help='TCP Nmap Engine scan')
 
     parser.add_argument('--all', action='store_true', help='Display all interfaces MACs')
     parser.add_argument('-i', '--interface', dest='interface', metavar='', help='Specify the interface name')
@@ -45,16 +46,19 @@ def main():
         final_auto_mac =auto_mac(first_half, sec_half)
         manual_mac(args.interface, final_auto_mac)
 
-# -------- NETWORK SCANNER --------
+# -------- HOSTS DISCOVERY --------
     if args.arpscan:
-        ip = get_network(args.arpscan)
+        nw = get_network(args.arpscan)
         try:
-            targets_ip = arp_scan(ip)
+            targets_ip = arp_scan(nw)
         except PermissionError as e:
             print(e)
             exit(1)
-    nmap_engine()
+    
 
+# -------- NETWORK SCANNER --------
+    if args.tcpscan:
+        nmap_engine(targets_ip)
 
 if __name__ == '__main__':
     main()

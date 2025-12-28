@@ -46,13 +46,21 @@ def root_priv():
 def nmap_engine(targets_ip):
     scanner = PortScanner()
     for ip in targets_ip:
-        scanner.scan(ip, arguments='-sC -Pn -T3 -sV --min-rate 1000 -p-', ports='1-65535')
-        print("[+] Scan result for {ip} [+]")
-        for proto in scanner[ip].all_tcp:
-            for port in scanner[ip][proto]:
-                state = scanner[ip][proto][port]['state']
-                print("[+]{port}/{proto} - {state}[+]")
-    
+        scanner.scan(ip, arguments='-sC -Pn -T3 -sV --min-rate 1000 -p-')
+        print(f"[+] Scan result for {ip} [+]")
+        if 'tcp' in scanner[ip]:
+            for port in scanner[ip]['tcp']:
+                state = scanner[ip]['tcp'][port]['state']
+                service = scanner[ip]['tcp'][port]['name']
+                print(f"[+]{port}/tcp - {state}[+]")
+
+
+
+    #for proto in scanner['192.168.1.1'].all_protocols():
+    #for port in scanner['192.168.1.1'][proto]:
+     #   service = scanner['192.168.1.1'][proto][port]['name']
+      #  state = scanner['192.168.1.1'][proto][port]['state']
+       # print(f"{port}/{proto} - {service} - {state}")
 
     
 
