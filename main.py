@@ -1,7 +1,4 @@
 import argparse
-from ast import Store
-
-from tables import Description
 from network_scanner.netw_scanner import *
 from mac_changer.mac_changer import *
 from mac_changer.mac_changer import _1st_half_mac, _2nd_half_mac

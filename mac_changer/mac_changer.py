@@ -5,10 +5,7 @@ import sys
 import json
 import random
 
-from django.template.defaultfilters import upper
-from numpy.ma.core import concatenate
-from numpy.testing.overrides import allows_array_ufunc_override
-from wtforms.validators import length
+
 
 
 def get_mac():
