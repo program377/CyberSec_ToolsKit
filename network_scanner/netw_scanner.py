@@ -42,33 +42,49 @@ def root_priv():
     sys.exit(0)
     
 
+
+
+def run_scan(scanner, targets_ip, scan_args):
+    for ip in targets_ip:
+        scanner.scan(ip, arguments=scan_args)
+
+
+
+def tcp_scan(scanner, targets_ip):
+    tcp_args = '-sC -Pn -T3 -sV -sS --min-rate 1000 -p-'
+    run_scan(scanner, targets_ip, tcp_args)
+
+def udp_scan(scanner, targets_ip):
+    udp_args = '-sC -Pn -T3 -sV -sU --min-rate 1000 -p-'
+    run_scan(scanner, targets_ip, udp_args)
+
+def display_scan_results(scanner, proto):
+    for host in scanner.all_hosts():
+        if proto not in scanner[host]:
+            continue
+
+        print(f"\n[+] Scan results for {host} ({proto.upper()}) [+]")
+        print("PORT\tSTATE\tSERVICE\tVERSION")
+
+        for port, data in scanner[host][proto].items():
+            state = data.get('state', '')
+            service = data.get('name', '')
+            product = data.get('product', '')
+            version = data.get('version', '')
+            extrainfo = data.get('extrainfo', '')
+
+            print(f"{port}/{proto}\t{state}\t{service}\t{product} {version} {extrainfo}")
+
+
+
 def nmap_engine(targets_ip):
     scanner = PortScanner()
-    for ip in targets_ip:
-        scanner.scan(ip, arguments='-sC -Pn -T3 -sV -sS --min-rate 1000 -p-')
-        for host in scanner.all_hosts(): #scanner.all_hosts() works for single ip, cidr,ranges, ARP-discovered hosts
-            print(f"[+] Scan result for {ip} [+]")
-            print("PORT------------STATE-----SERVICE-----VERSION [+]")
-            if 'tcp' in scanner[host]:
-                for port in scanner[host]['tcp']:
-                    state = scanner[host]['tcp'][port]['state']
-                    service = scanner[host]['tcp'][port]['name']
-                    product = scanner[host]['tcp'][port]['product']
-                    version = scanner[host]['tcp'][port]['version']
-                    extrainfo = scanner[host]['tcp'][port]['extrainfo']
-                    conf = scanner[host]['tcp'][port]['conf']
-                    cpe = scanner[host]['tcp'][port]['cpe']
-                    #print("[+] PORT------STATE-----SERVICE-----VERSION [+]")
-                    print(f"{port}/tcp  \t{state}  \t{service}-{version} - {product} {extrainfo} - {conf}")
 
+    tcp_scan(scanner, targets_ip)
+    display_scan_results(scanner, 'tcp')
 
-
-
-    
-
-
-
-
+    udp_scan(scanner, targets_ip)
+    display_scan_results(scanner, 'udp')
 
 
 
