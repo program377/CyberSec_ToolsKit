@@ -42,12 +42,9 @@ def root_priv():
     sys.exit(0)
     
 
-
-
 def run_scan(scanner, targets_ip, scan_args):
     for ip in targets_ip:
         scanner.scan(ip, arguments=scan_args)
-
 
 
 def tcp_scan(scanner, targets_ip):
@@ -74,7 +71,6 @@ def display_scan_results(scanner, proto):
             extrainfo = data.get('extrainfo', '')
 
             print(f"{port}/{proto}\t{state}\t{service}\t{product} {version} {extrainfo}")
-
 
 
 def nmap_engine(targets_ip):
