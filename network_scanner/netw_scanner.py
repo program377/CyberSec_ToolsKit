@@ -1,5 +1,7 @@
 from os import *
 import sys
+from tabnanny import verbose
+from hamcrest import none
 from scapy.all import Ether, ARP, srp
 import re
 from nmap import PortScanner
@@ -41,10 +43,14 @@ def root_priv():
         raise PermissionError("[-] Root privilege required [-]")
     sys.exit(0)
     
+def nmap_engine(targets_ip):
+    scanner = PortScanner()
 
-def run_scan(scanner, targets_ip, scan_args):
-    for ip in targets_ip:
-        scanner.scan(ip, arguments=scan_args)
+    tcp_scan(scanner, targets_ip)
+    display_scan_results(scanner, 'tcp')
+
+    udp_scan(scanner, targets_ip)
+    display_scan_results(scanner, 'udp')
 
 
 def tcp_scan(scanner, targets_ip):
@@ -54,6 +60,12 @@ def tcp_scan(scanner, targets_ip):
 def udp_scan(scanner, targets_ip):
     udp_args = '-sC -Pn -T3 -sV -sU --min-rate 1000 -p-'
     run_scan(scanner, targets_ip, udp_args)
+
+def run_scan(scanner, targets_ip, scan_args):
+    for ip in targets_ip:
+        scanner.scan(ip, arguments=scan_args)
+
+
 
 def display_scan_results(scanner, proto):
     for host in scanner.all_hosts():
@@ -73,14 +85,8 @@ def display_scan_results(scanner, proto):
             print(f"{port}/{proto}\t{state}\t{service}\t{product} {version} {extrainfo}")
 
 
-def nmap_engine(targets_ip):
-    scanner = PortScanner()
 
-    tcp_scan(scanner, targets_ip)
-    display_scan_results(scanner, 'tcp')
 
-    udp_scan(scanner, targets_ip)
-    display_scan_results(scanner, 'udp')
 
 
 

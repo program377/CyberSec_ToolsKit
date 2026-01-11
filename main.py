@@ -53,11 +53,18 @@ def main():
     #--TCP scan only--------------
         # isinstance() checks whether the argument was used in value mode (string)
     elif args.tcpscan and isinstance(args.tcpscan, str):
-        nmap_engine([args.tcpscan])
+        tcp_scanner = nmap_engine([args.tcpscan])
+    #UDP scan only----------------
+    elif args.udpscan and isinstance(args.udpscan, str):
+        udp_scanner = nmap_engine(args.udpscan)
     #--ARP+TCP scan
     elif args.arpscan and args.tcpscan is True:
         targets = arp_scan(args.arpscan)
-        nmap_engine(targets)
+        tcp_scanner = nmap_engine(targets)
+    #--ARP+UDP scan
+    elif args.arpscan and args.udpscan is True:
+        targets = arp_scan(args.arpscan)
+        udp_scanner = nmap_engine(targets)
     else:
         parser.print_help()
 
