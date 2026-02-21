@@ -2,6 +2,7 @@ from os import *
 import sys
 from tabnanny import verbose
 from hamcrest import none
+from prompt_toolkit import print_formatted_text
 from scapy.all import Ether, ARP, srp
 import re
 from nmap import PortScanner
@@ -57,9 +58,10 @@ def tcp_scan(scanner, targets_ip):
     tcp_args = '-sC -Pn -T3 -sV -sS --min-rate 1000 -p-'
     run_scan(scanner, targets_ip, tcp_args)
 
-def udp_scan(scanner, targets_ip):
-    udp_args = '-sC -Pn -T3 -sV -sU --min-rate 1000 -p-'
-    run_scan(scanner, targets_ip, udp_args)
+# def udp_scan(scanner, targets_ip):
+#     print_formatted_text(color_depth=10)
+#     udp_args = '-sC -Pn -T3 -sV -sU --min-rate 1000 -p-'
+#     run_scan(scanner, targets_ip, udp_args)
 
 def run_scan(scanner, targets_ip, scan_args):
     for ip in targets_ip:

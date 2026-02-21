@@ -11,7 +11,6 @@ def main():
     # nargs='?' allows the argument to be used with or without a value
     # const=True → value used when argument is provided without a value
     parser.add_argument('-t', '--tcp-scan', dest='tcpscan', nargs='?', const=True, help='TCP Nmap Engine scan')
-    parser.add_argument('-u', '--udp-scan', dest='udpscan', metavar='', help='TCP Nmap Engine scan')
 
     parser.add_argument('--all', action='store_true', help='Display all interfaces MACs')
     parser.add_argument('-i', '--interface', dest='interface', metavar='', help='Specify the interface name')
@@ -61,10 +60,6 @@ def main():
     elif args.arpscan and args.tcpscan is True:
         targets = arp_scan(args.arpscan)
         tcp_scanner = nmap_engine(targets)
-    #--ARP+UDP scan
-    elif args.arpscan and args.udpscan is True:
-        targets = arp_scan(args.arpscan)
-        udp_scanner = nmap_engine(targets)
     else:
         parser.print_help()
 
