@@ -6,6 +6,7 @@ from prompt_toolkit import print_formatted_text
 from scapy.all import Ether, ARP, srp
 import re
 from nmap import PortScanner
+from vulnerabilities_assessments.cve_matching import query_nvd
 
 
 
@@ -43,12 +44,14 @@ def get_network(ip):
 def root_priv():
     if getuid() != 0:
         raise PermissionError("[-] Root privilege required [-]")
+        sys.exit(1)
     
 def nmap_engine(targets_ip):
     scanner = PortScanner()
 
     tcp_scan(scanner, targets_ip)
-    display_scan_results(scanner, 'tcp')
+    service, version = display_scan_results(scanner, 'tcp')
+    query_nvd(service, version)
 
     # udp_scan(scanner, targets_ip)
     # display_scan_results(scanner, 'udp')
@@ -74,7 +77,7 @@ def display_scan_results(scanner, proto):
         if proto not in scanner[host]:
             continue
 
-        print(f"\n[+] Scan results for {host} ({proto.upper()}) [+]")
+        print(f"\n=======================[+] Scan results for {host} ({proto.upper()}) [+]=======================")
         print("PORT\tSTATE\tSERVICE\tVERSION")
 
         for port, data in scanner[host][proto].items():
@@ -85,6 +88,7 @@ def display_scan_results(scanner, proto):
             extrainfo = data.get('extrainfo', '')
 
             print(f"{port}/{proto}\t{state}\t{service}\t{product} {version} {extrainfo}")
+    return service,version
 
 
 

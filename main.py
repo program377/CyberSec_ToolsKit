@@ -54,6 +54,7 @@ def main():
         # isinstance() checks whether the argument was used in value mode (string)
     elif args.tcpscan and isinstance(args.tcpscan, str):
         tcp_scanner = nmap_engine([args.tcpscan])
+ 
     #UDP scan only----------------
     elif args.udpscan and isinstance(args.udpscan, str):
         udp_scanner = nmap_engine(args.udpscan)
