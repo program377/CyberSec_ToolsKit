@@ -97,7 +97,7 @@ def display_scan_results(scanner, proto):
             # Query NVD/CVEs for this service/version
             cves = query_nvd(service, version)
             if cves:
-                vuln_results.append(f"{service}-{version} is vulnerable {', '.join(cves)}")
+                vuln_results.append(f"{service}-{version} is vulnerable {', '.join(sorted(cves))}")
 
         # Print vulnerabilities once per host
         if vuln_results:
