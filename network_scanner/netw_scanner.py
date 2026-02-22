@@ -9,6 +9,7 @@ from nmap import PortScanner
 
 
 
+
 def arp_scan(ip):
     root_priv()
     if "/" not in ip:
@@ -42,7 +43,6 @@ def get_network(ip):
 def root_priv():
     if getuid() != 0:
         raise PermissionError("[-] Root privilege required [-]")
-    sys.exit(0)
     
 def nmap_engine(targets_ip):
     scanner = PortScanner()
@@ -50,8 +50,8 @@ def nmap_engine(targets_ip):
     tcp_scan(scanner, targets_ip)
     display_scan_results(scanner, 'tcp')
 
-    udp_scan(scanner, targets_ip)
-    display_scan_results(scanner, 'udp')
+    # udp_scan(scanner, targets_ip)
+    # display_scan_results(scanner, 'udp')
 
 
 def tcp_scan(scanner, targets_ip):
