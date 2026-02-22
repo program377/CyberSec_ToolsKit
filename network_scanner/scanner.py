@@ -73,11 +73,14 @@ def run_scan(scanner, targets_ip, scan_args):
 
 
 def display_scan_results(scanner, proto):
+    
     for host in scanner.all_hosts():
         if proto not in scanner[host]:
             continue
-
-        print(f"\n{'='*50}[+] Scan results for {host} ({proto.upper()}) [+]{'='*50}")
+        print("=" * 100)    
+        title = f"Scan results for {host} ({proto.upper()})"
+        print(title.center(100))
+        print("=" * 100)
         print(f"{'PORT':<12}{'STATE':<12}{'SERVICE':<15} VERSION")
 
         # Collect vulnerabilities for this host
@@ -97,7 +100,10 @@ def display_scan_results(scanner, proto):
             # Query NVD/CVEs for this service/version
             cves = query_nvd(service, version)
             if cves:
-                vuln_results.add(f"{service}-{version} is vulnerable {', '.join(sorted(cves))}") 
+                service_key = f"{service} {version}".strip()
+                vuln_results.add(
+                f"{service_key}\n  - " + "\n  - ".join(sorted(cves))
+                )
 
         # Print vulnerabilities once per host
         if vuln_results:

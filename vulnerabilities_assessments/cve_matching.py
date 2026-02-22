@@ -23,8 +23,23 @@ def query_nvd(service, version):
     data = response.json()
     vulnerabilities = []
     for item in data.get("vulnerabilities", []):
-        cve = item["cve"]["id"]
-        print(cve)
-        vulnerabilities.append(cve)
+        cve_item = item["cve"]  # full dictionary
+        cve_id = cve_item['id']
+
+        # Default values in case CVSS data is missing
+        base_score = "N/A"
+        severity = "N/A"
+
+        metrics = cve_item.get('metrics', {})
+        if 'cvssMetricV2' in metrics:
+            cvss = metrics['cvssMetricV2'][0]
+            base_score = cvss['cvssData']['baseScore']
+            severity = cvss.get('baseSeverity', 'N/A')
+        elif 'cvssMetricV3' in metrics:
+            cvss = metrics['cvssMetricV3'][0]
+            base_score = cvss['cvssData']['baseScore']
+            severity = cvss.get('baseSeverity', 'N/A')
+
+    print(f"{cve_id} (CVSS {base_score} – {severity})")
     
     return vulnerabilities
