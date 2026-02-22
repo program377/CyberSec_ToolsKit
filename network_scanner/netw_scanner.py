@@ -20,13 +20,13 @@ def arp_scan(ip):
     targets = {}
     arp_req_broad = Ether(dst='ff:ff:ff:ff:ff:ff')/ARP(pdst=ip)
     answers = srp(arp_req_broad, timeout=2, verbose=False)[0]
-    print("-------------------------------------------")
+    print("-" * 43)
     print('IP Adresses\t\tMACs Adresses')
-    print("-------------------------------------------") 
+    print("-" * 43) 
     for elt in answers:
         mac_ip_list.append(elt[1].psrc)
         print(elt[1].psrc,"  \t", elt[1].hwsrc)
-    print("-------------------------------------------")
+    print("-" * 43)
     #print(mac_ip_list)
     #scapy.ls(scapy.ARP)
     return mac_ip_list
@@ -50,15 +50,15 @@ def nmap_engine(targets_ip):
     scanner = PortScanner()
 
     tcp_scan(scanner, targets_ip)
-    service, version = display_scan_results(scanner, 'tcp')
-    query_nvd(service, version)
+    display_scan_results(scanner, 'tcp')
+    
 
     # udp_scan(scanner, targets_ip)
     # display_scan_results(scanner, 'udp')
 
 
 def tcp_scan(scanner, targets_ip):
-    tcp_args = '-sC -Pn -T3 -sV -sS --min-rate 1000 -p-'
+    tcp_args = '-sC -Pn -T4 -sV -sS --min-rate 1000 -p-'
     run_scan(scanner, targets_ip, tcp_args)
 
 # def udp_scan(scanner, targets_ip):
@@ -77,9 +77,13 @@ def display_scan_results(scanner, proto):
         if proto not in scanner[host]:
             continue
 
-        print(f"\n=======================[+] Scan results for {host} ({proto.upper()}) [+]=======================")
-        print("PORT\tSTATE\tSERVICE\tVERSION")
+        print(f"\n{'='*50}[+] Scan results for {host} ({proto.upper()}) [+]{'='*50}")
+        print(f"{'PORT':<15} {'STATE':<10} {'SERVICE':<15} VERSION")
 
+        # Collect vulnerabilities for this host
+        vuln_results = []
+
+        # Loop through each port
         for port, data in scanner[host][proto].items():
             state = data.get('state', '')
             service = data.get('name', '')
@@ -87,8 +91,24 @@ def display_scan_results(scanner, proto):
             version = data.get('version', '')
             extrainfo = data.get('extrainfo', '')
 
-            print(f"{port}/{proto}\t{state}\t{service}\t{product} {version} {extrainfo}")
-    return service,version
+            version_info = f"{product} {version} {extrainfo}".strip()
+            print(f"{port}/{proto:<15} {state:<10} {service:<15} {version_info}")
+
+            # Query NVD/CVEs for this service/version
+            cves = query_nvd(service, version)
+            if cves:
+                vuln_results.append(f"{service}-{version} is vulnerable {', '.join(cves)}")
+
+        # Print vulnerabilities once per host
+        if vuln_results:
+            print("-" * 50)
+            print("[+] Vulnerabilities Assessment Results [+]")
+            print("-" * 50)
+            for v in vuln_results:
+                print(v)
+
+    # No need to return service/version here
+    return
 
 
 
