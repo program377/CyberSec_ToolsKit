@@ -78,7 +78,7 @@ def display_scan_results(scanner, proto):
             continue
 
         print(f"\n{'='*50}[+] Scan results for {host} ({proto.upper()}) [+]{'='*50}")
-        print(f"{'PORT':<15} {'STATE':<15} {'SERVICE':<15} VERSION")
+        print(f"{'PORT':<12}{'STATE':<12}{'SERVICE':<15} VERSION")
 
         # Collect vulnerabilities for this host
         vuln_results = set()
@@ -89,10 +89,10 @@ def display_scan_results(scanner, proto):
             service = data.get('name', '')
             product = data.get('product', '')
             version = data.get('version', '')
-            extrainfo = data.get('extrainfo', '')
-
-            version_info = f"{product} {version} {extrainfo}".strip()
-            print(f"{port}/{proto:<15} {state:<15} {service:<15} {version_info}")
+            
+            version_info = f"{product} {version} ".strip()
+            port_proto = f"{port}/{proto}"
+            print(f"{port_proto:<12}{state:<12}{service:<15}{version_info}")
 
             # Query NVD/CVEs for this service/version
             cves = query_nvd(service, version)

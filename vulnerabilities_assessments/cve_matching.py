@@ -24,6 +24,7 @@ def query_nvd(service, version):
     vulnerabilities = []
     for item in data.get("vulnerabilities", []):
         cve = item["cve"]["id"]
+        print(cve)
         vulnerabilities.append(cve)
     
     return vulnerabilities
