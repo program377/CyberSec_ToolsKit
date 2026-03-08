@@ -17,7 +17,7 @@ def lfi(url):
                     for key in params:
                         params[key] = payload
                     req = requests.get(base, params=params)
-                    print(f"[+] Testing '{key}' parameter with GET method ...[+]")
+                    print(f"\n[+] Testing '{key}' parameter with GET method ...[+]")
                     if vuln_recon in req.text:
                         print(req.url, "is vulnerable")
                         exit(0)
