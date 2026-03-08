@@ -1,5 +1,8 @@
 # 🛡️ CyberSecurity Toolkit
 
+⚠️ Public repository for demonstration and learning purposes only.  
+Copying is allowed, but modification, redistribution, or commercial use is strictly prohibited.
+
 > A unified, modular Python-based cybersecurity toolkit built for network reconnaissance, vulnerability scanning, MAC spoofing, and web attack detection — all from a single CLI interface.
 
 ---
