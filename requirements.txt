@@ -1,2 +1,4 @@
-python-nmap
-PyYAML
+scapy==2.5.0
+python-nmap==0.7.1
+python-dotenv==1.2.1
+requests==2.32.5

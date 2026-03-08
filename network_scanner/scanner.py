@@ -1,8 +1,5 @@
 from os import *
 import sys
-from tabnanny import verbose
-from hamcrest import none
-from prompt_toolkit import print_formatted_text
 from scapy.all import Ether, ARP, srp
 import re
 from nmap import PortScanner

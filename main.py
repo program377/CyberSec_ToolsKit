@@ -1,6 +1,4 @@
 import argparse
-
-from sqlalchemy import desc
 from network_scanner.scanner import *
 from mac_changer.mac_changer import *
 from mac_changer.mac_changer import _1st_half_mac, _2nd_half_mac

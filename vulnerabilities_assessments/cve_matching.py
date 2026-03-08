@@ -1,6 +1,4 @@
-from unittest.loader import VALID_MODULE_NAME
 
-from numpy import append
 import requests
 import os
 from dotenv import load_dotenv
