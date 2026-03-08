@@ -4,7 +4,7 @@ import requests
 from urllib.parse import urlparse, parse_qs
 
 def lfi(url):
-    vuln_recon = "root:x:"
+    vuln_recon = "root:x:" 
     parsed = urlparse(url)
     base = parsed.scheme + "://" + parsed.netloc + parsed.path
     params = parse_qs(parsed.query)
