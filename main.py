@@ -1,8 +1,10 @@
 import argparse
+
+from sqlalchemy import desc
 from network_scanner.scanner import *
 from mac_changer.mac_changer import *
 from mac_changer.mac_changer import _1st_half_mac, _2nd_half_mac
-
+from vulnerabilities_assessments.lfi_rfi import *
 
 def main():
     parser = argparse.ArgumentParser(description="Cyber Security Toolkit")
@@ -17,6 +19,7 @@ def main():
     parser.add_argument('-i', '--interface', dest='interface', metavar='', help='Specify the interface name')
     parser.add_argument('-m', '--manual', dest='manual', metavar='', help='Manually change the MAC address')
     parser.add_argument('-a','--auto', action='store_true', help='Automatically change the MAC address')
+    parser.add_argument('--lfi', dest='lfi', help='LFI Scanner, enter valid url for detection')
     args = parser.parse_args()
     ifaces_macs = get_mac()
     
@@ -62,12 +65,12 @@ def main():
     elif args.arpscan and args.tcpscan is True:
         targets = arp_scan(args.arpscan)
         tcp_scanner = nmap_engine(targets)
-    #--ARP+UDP scan
-    # elif args.arpscan and args.udpscan is True:
-    #     targets = arp_scan(args.arpscan)
-    #     udp_scanner = nmap_engine(targets)
+    # Vulns Assessments
+    elif args.lfi:
+        lfi(args.lfi)
     else:
         parser.print_help()
+    
 
 
 
