@@ -52,25 +52,13 @@ def nmap_engine(targets_ip):
     tcp_scan(scanner, targets_ip)
     display_scan_results(scanner, 'tcp')
     
-
-    # udp_scan(scanner, targets_ip)
-    # display_scan_results(scanner, 'udp')
-
-
 def tcp_scan(scanner, targets_ip):
     tcp_args = '-sC -Pn -T4 -sV -sS --min-rate 1000 -p-'
     run_scan(scanner, targets_ip, tcp_args)
 
-# def udp_scan(scanner, targets_ip):
-#     print_formatted_text(color_depth=10)
-#     udp_args = '-sC -Pn -T3 -sV -sU --min-rate 1000 -p-'
-#     run_scan(scanner, targets_ip, udp_args)
-
 def run_scan(scanner, targets_ip, scan_args):
     for ip in targets_ip:
         scanner.scan(ip, arguments=scan_args)
-
-
 
 def display_scan_results(scanner, proto):
     
